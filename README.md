@@ -1,138 +1,88 @@
-# MCP Weather SSE Server
+# 🧪 Testing Claude for Desktop with MCP Server
 
-A Model Context Protocol (MCP) server that connects to the OpenWeatherMap API through Server-Sent Events (SSE). This server provides real-time weather data to AI clients like Claude, CursorAI, or MCP-Inspector.
+This guide shows you how to test your Model Context Protocol (MCP) server using Claude for Desktop.
 
-## Features
+## 1. Requirements
 
-- Implements the Model Context Protocol for seamless integration with AI tools
-- Uses Server-Sent Events (SSE) transport for real-time communication
-- Connects to the OpenWeatherMap API to fetch live weather data
-- Provides three tools:
-  - `get_current_weather`: Get current weather conditions for a city
-  - `get_weather_forecast`: Get a multi-day weather forecast for a city
-  - `get_weather_by_coordinates`: Get weather for specific geographic coordinates
+- Claude for Desktop (Windows or macOS)
+- MCP server script (e.g., `weather.py`) running via `uv run weather.py`
 
-## Prerequisites
+## 2. Configure Claude to Launch the MCP Server
 
-- Python 3.8+
-- An OpenWeatherMap API key (sign up at [openweathermap.org](https://openweathermap.org/))
+Create or edit the Claude config file:
 
-## Installation
+- **macOS/Linux**: `~/.config/claude/claude_desktop_config.json` or `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/mcp-weather-sse.git
-   cd mcp-weather-sse
-   ```
+Example content:
 
-2. Create a virtual environment and install dependencies:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install mcp requests
-   ```
-
-## Usage
-
-### Starting the Server
-
-You can start the server with your OpenWeatherMap API key:
-
-```bash
-# Using command line argument
-python mcp_weather_sse.py --api-key YOUR_API_KEY
-
-# Using environment variable
-export OPENWEATHER_API_KEY=YOUR_API_KEY
-python mcp_weather_sse.py
-
-# Customize host and port (default: 127.0.0.1:3001)
-python mcp_weather_sse.py --host 0.0.0.0 --port 8080
+```json
+{
+  "mcpServers": {
+    "weather": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/ABSOLUTE/PATH/TO/PARENT/FOLDER/weather",
+        "run",
+        "weather.py"
+      ]
+    }
+  }
+}
 ```
 
-### Connecting with MCP Clients
+Replace `/ABSOLUTE/PATH/...` with the actual absolute path to the folder containing `weather.py`.
 
-#### Cursor AI
+## 3. Restart Claude
 
-1. Open Cursor AI
-2. Go to File → Preferences → Cursor Settings → MCP → Add New Server
-3. Enter the following details:
-   - Name: Weather SSE
-   - Type: sse
-   - URL: http://127.0.0.1:3001/sse
+Close and reopen Claude for Desktop. If configured correctly, a tool icon will appear at the bottom-left of the chat window.
 
-#### Claude Desktop
+## 4. Test Your Tool
 
-1. Open Claude Desktop
-2. Go to Settings → MCP Servers
-3. Add a new server with the following configuration:
-   ```json
-   {
-     "mcpServers": {
-       "weather": {
-         "type": "sse",
-         "url": "http://127.0.0.1:3001/sse"
-       }
-     }
-   }
-   ```
+Click the **tool icon** to see your MCP server tools like `get-alerts` and `get-forecast`.
 
-#### MCP-Inspector
+Try prompts such as:
 
-You can use the MCP-Inspector tool to test your server:
-
-```bash
-npm install -g @anthropic-ai/mcp-inspector
-mcp-inspector http://127.0.0.1:3001/sse
+```
+What’s the weather in Sacramento?
+What are the active weather alerts in Texas?
 ```
 
-## Example Queries
+Claude should use your local server to respond.
 
-Once connected, you can use the following queries to interact with the server:
+> Note: This example server uses US-based weather APIs, so test with locations in the US.
 
-1. "What's the current weather in New York?"
-2. "Can you give me a 3-day forecast for Tokyo?"
-3. "What's the weather at coordinates 40.7128, -74.0060?"
+## 5. Troubleshooting
 
-## API Reference
+If you don’t see your server or tool in Claude:
 
-### `get_current_weather`
+### Check config
 
-Get current weather conditions for a city.
+- Ensure JSON syntax is valid.
+- Use absolute paths, not relative ones.
 
-Parameters:
-- `city` (string): City name (e.g., 'London', 'New York')
-- `units` (string, optional): Units of measurement ('metric' or 'imperial', default: 'metric')
+### Check logs
 
-### `get_weather_forecast`
+Logs may be found in:
 
-Get a multi-day weather forecast for a city.
+- **macOS/Linux**: `~/Library/Logs/Claude/mcp.log`
+- **Windows**: `%APPDATA%\Claude\Logs\mcp.log`
 
-Parameters:
-- `city` (string): City name (e.g., 'London', 'New York')
-- `days` (integer, optional): Number of days to forecast (1-5, default: 3)
-- `units` (string, optional): Units of measurement ('metric' or 'imperial', default: 'metric')
+You can tail logs like this (macOS/Linux):
 
-### `get_weather_by_coordinates`
+```bash
+tail -n 20 -f ~/Library/Logs/Claude/mcp*.log
+```
 
-Get weather for specific geographic coordinates.
+### Manually test server
 
-Parameters:
-- `latitude` (number): Latitude coordinate
-- `longitude` (number): Longitude coordinate
-- `units` (string, optional): Units of measurement ('metric' or 'imperial', default: 'metric')
+Run:
 
-## Security Considerations
+```bash
+uv --directory /ABSOLUTE/PATH/... run weather.py
+```
 
-- The server binds to 127.0.0.1 by default, making it only accessible from your local machine
-- For production use, implement proper authentication and HTTPS
-- Consider rate limiting to avoid exceeding OpenWeatherMap API quotas
+## ✅ Success
 
-## License
-
-MIT
-
-## Acknowledgments
-
-- Built with the [Model Context Protocol](https://modelcontextprotocol.io/)
-- Uses data from the [OpenWeatherMap API](https://openweathermap.org/api)
+If you see your tool in Claude and prompts generate valid responses, the integration is complete!
