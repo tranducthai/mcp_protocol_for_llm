@@ -1,6 +1,6 @@
-# 🧪 Testing Claude for Desktop with MCP Server
+# 🧪 MCP Server for Claude Desktop
 
-This guide shows you how to test your Model Context Protocol (MCP) server using Claude for Desktop.
+This guide shows you how to use your Model Context Protocol (MCP) server using Claude for Desktop.
 
 ## 1. Requirements
 
