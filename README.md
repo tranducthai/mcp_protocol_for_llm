@@ -4,8 +4,8 @@ This guide shows you how to use your Model Context Protocol (MCP) server using C
 
 ## 1. Requirements
 
-- Claude for Desktop (Windows or macOS)
-- MCP server script (e.g., `weather.py`) running via `uv run weather.py`
+- Claude/Cursor for Desktop (Windows or macOS)
+- MCP server script (e.g., `weather.py`,'map.py') running via `uv run weather.py`
 
 ## 2. Configure Claude to Launch the MCP Server
 
@@ -40,18 +40,18 @@ Close and reopen Claude for Desktop. If configured correctly, a tool icon will a
 
 ## 4. Test Your Tool
 
-Click the **tool icon** to see your MCP server tools like `get-alerts` and `get-forecast`.
+Click the **tool icon** to see your MCP server tools like `search-location` and `get-forecast`.
 
 Try prompts such as:
 
 ```
-What’s the weather in Sacramento?
-What are the active weather alerts in Texas?
+What’s the weather in Vinh, VietNam?
+Find the restaurant near Ho Guom ?
 ```
 
 Claude should use your local server to respond.
 
-> Note: This example server uses US-based weather APIs, so test with locations in the US.
+
 
 ## 5. Troubleshooting
 
