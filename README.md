@@ -2,6 +2,10 @@
 
 This guide shows you how to use your Model Context Protocol (MCP) server using Claude for Desktop.
 
+<a href="https://glama.ai/mcp/servers/@tranducthai/mcp_protocol_weather">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@tranducthai/mcp_protocol_weather/badge" alt="Weather SSE Server MCP server" />
+</a>
+
 ## 1. Requirements
 
 - Claude/Cursor for Desktop (Windows or macOS)
@@ -50,8 +54,6 @@ Find the restaurant near Ho Guom ?
 ```
 
 Claude should use your local server to respond.
-
-
 
 ## 5. Troubleshooting
 
